@@ -81,7 +81,7 @@ async def update_user(user_id: UUID, user_update: UserUpdate, request: Request, 
     if not updated_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    return UserResponse.model_construct(
+    return UserResponse(
         id=updated_user.id,
         bio=updated_user.bio,
         full_name=updated_user.full_name,
@@ -135,7 +135,7 @@ async def create_user(user: UserCreate, request: Request, db: AsyncSession = Dep
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to create user")
     
     
-    return UserResponse.model_construct(
+    return UserResponse(
         id=created_user.id,
         bio=created_user.bio,
         full_name=created_user.full_name,
@@ -146,7 +146,7 @@ async def create_user(user: UserCreate, request: Request, db: AsyncSession = Dep
         created_at=created_user.created_at,
         updated_at=created_user.updated_at,
         links=create_user_links(created_user.id, request)
-    )
+)
 
 
 @router.get("/users/", response_model=UserListResponse, name="list_users", tags=["User Management"])
@@ -154,7 +154,7 @@ async def list_users(request: Request, skip: int = 0, limit: int = 10, db: Async
     total_users = await UserService.count(db)
     users = await UserService.list_users(db, skip=skip, limit=limit)
 
-    user_responses = [UserResponse.model_construct(
+    user_responses = [UserResponse(
         id=user.id,
         bio=user.bio,
         full_name=user.full_name,
