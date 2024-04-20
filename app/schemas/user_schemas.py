@@ -306,7 +306,7 @@ class UserListResponse(BaseModel):
                     "totalItems": 100,
                     "links": [
                         {"rel": "first", "href": "https://api.example.com/users?page=1"},
-                        {"rel": "prev", "href": "https://api.example.com/users?page=2",
+                        {"rel": "prev", "href": "https://api.example.com/users?page=2"},
                         {"rel": "self", "href": "https://api.example.com/users?page=3"},
                         {"rel": "next", "href": "https://api.example.com/users?page=4"},
                         {"rel": "last", "href": "https://api.example.com/users?page=5"}
