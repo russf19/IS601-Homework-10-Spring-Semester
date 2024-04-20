@@ -51,15 +51,15 @@ async def get_user(user_id: UUID, request: Request, db: AsyncSession = Depends(g
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    return UserResponse.model_construct(
+    return UserResponse(
         id=user.id,
         username=user.username,
         email=user.email,
         last_login_at=user.last_login_at,
         created_at=user.created_at,
         updated_at=user.updated_at,
-        links=create_user_links(user.id, request)  
-    )
+        links=create_user_links(user.id, request)
+)
 
 # Additional endpoints for update, delete, create, and list users follow a similar pattern, using
 # asynchronous database operations, handling security with OAuth2PasswordBearer, and enhancing response
@@ -76,7 +76,7 @@ async def update_user(user_id: UUID, user_update: UserUpdate, request: Request, 
     - **user_id**: UUID of the user to update.
     - **user_update**: UserUpdate model with updated user information.
     """
-    user_data = user_update.model_dump(exclude_unset=True)
+    user_data = user_update.dict(exclude_unset=True)
     updated_user = await UserService.update(db, user_id, user_data)
     if not updated_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -130,7 +130,7 @@ async def create_user(user: UserCreate, request: Request, db: AsyncSession = Dep
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists")
     
-    created_user = await UserService.create(db, user.model_dump())
+    created_user = await UserService.create(db, user.dict())
     if not created_user:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to create user")
     
