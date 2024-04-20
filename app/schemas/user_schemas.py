@@ -36,14 +36,14 @@ Data Serialization and Deserialization: Pydantic handles the secure conversion o
 Overall, the use of Pydantic models in this file contributes to building a secure, validated, and well-documented API for user-related operations in a FastAPI application. The combination of type annotations, regex-based validators, and inheritance promotes code reusability, maintainability, and adherence to security best practices.
 """
 # Import required libraries and modules
-import re  # Provides regular expression matching operations.
-import uuid  # Provides immutable UUID objects and functions for generating new UUIDs.
 from datetime import datetime, timezone  # Provides classes for manipulating dates and times in both simple and complex ways.
 from urllib.parse import urlparse  # Functions for breaking down and reconstructing URLs.
 from pydantic import BaseModel, EmailStr, Field, HttpUrl, validator  # Pydantic is used for data validation and settings management using Python type annotations.
 from typing import List, Optional  # Standard library typing module, used for constructing complex type hints.
 from app.schemas.link_schema import Link  # Custom module, likely provides a schema for links (part of HATEOAS).
 from app.schemas.pagination_schema import EnhancedPagination  # Custom pagination schema supporting enriched functionality.
+import re  # Provides regular expression matching operations.
+import uuid  # Provides immutable UUID objects and functions for generating new UUIDs.
 
 # Define a base user model with common attributes
 class UserBase(BaseModel):
@@ -306,9 +306,9 @@ class UserListResponse(BaseModel):
                     "totalItems": 100,
                     "links": [
                         {"rel": "first", "href": "https://api.example.com/users?page=1"},
-                        {"rel": "prev", "href": "https://api.example.com/users?page=2",
-                        {"rel": "self", "href": "https://api.example.com/users?page=3"},
-                        {"rel": "next", "href": "https://api.example.com/users?page=4"},
+                        {"rel": "prev", "href": None},
+                        {"rel": "self", "href": "https://api.example.com/users?page=1"},
+                        {"rel": "next", "href": "https://api.example.com/users?page=2"},
                         {"rel": "last", "href": "https://api.example.com/users?page=5"}
                     ]
                 }
@@ -358,3 +358,4 @@ class ErrorResponse(BaseModel):
                 "details": "The provided username does not exist or the password is incorrect."
             }
         }
+        
